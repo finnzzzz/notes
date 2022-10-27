@@ -395,12 +395,14 @@ for (var = 1, i <= 100, i+=){
 *立即跳出整個循環(循環結束)*
 
 ## 數組(Array)<br>
-一組數據的集合
+一組數據的集合<br>
+創建的兩種方式
+
 :::success
-var arr = new Array();
+1. var arr = new Array(2, 3);
 :::
 :::success
-var arr1 = [1, 2, 'pnik', true]
+2. var arr1 = [1, 2, 'pnik', true]
 :::
 
 ### 數組索引<br>
@@ -732,3 +734,321 @@ f1();
       console.log(a);
 //9, 9, 9, 9, 9, a is not defined()
 ```
+## 對象 object
+![](https://i.imgur.com/aCmCdZW.png)
+*使對象表達結構更清晰*<br>
+1. 利用 字面量 創建 {}<br>
+![](https://i.imgur.com/O8L1N2G.png)
+
+```javascript=
+var obj = {
+    uname:'xxx',
+    age: 18,
+    sex: 'male',
+    sayHi:funciton(){
+        console.log('hi');    
+    }
+}
+console.log(obj.uname);
+console.log(obj['age']);
+obj.sayHi();
+```
+變量、屬性、函數、方法差別
+![](https://i.imgur.com/bxNkocJ.png)
+
+2. 利用 new object 創建
+![](https://i.imgur.com/rxepu8a.png)
+
+```javascript=
+var obj = new Object(); //創建一個空對象
+obj.uname = 'xxx';
+obj.age = 18;
+obj.sex = 'male';
+obj.sayHi = function(){
+    console.log('hi');
+}
+console.log(obj.uname);
+console.log(obj['age']);
+obj.sayHi();
+```
+4. 利用 構造函數 創建
+![](https://i.imgur.com/IU2DeiY.png)
+![](https://i.imgur.com/CDHztXp.png)
+
+```javascript=
+//1.構造函數
+function Star(uname, age, sex){
+    this.name = uname;
+    this.age = age;
+    this.sex = sex;
+    this.sing = function(song){
+        console.log(song);
+    }
+}
+//2.對象
+var ldh = new Star('劉德華', 18, '男');
+console.log(ldh.name);
+console.log(ldh['sex']);
+ldh.sing('冰雨');
+//3.利用構造函數創建對象的過程也稱為對象的實例化
+```
+![](https://i.imgur.com/h77ZDFh.png)
+### 遍歷對象
+for (變量 in 對象){}
+```javascript=
+var obj = {
+    name:'xxx',
+    age: 18,
+    sex: 'male'
+    fn:function(){}
+}
+for (var k in obj){
+    console.log(k); //k變量輸出得到是屬性名
+    console.log(obj[k]); //obj[k]得到的是屬性值
+}
+```
+小結
+![](https://i.imgur.com/2UZlEnR.png)
+## 內置對象
+![](https://i.imgur.com/R68mXUr.png)
+### Math
+![](https://i.imgur.com/C4JUBQq.png)
+隨機數 0 <= x < 1
+```javascript=
+console.log(Math.random());
+```
+兩數之間隨機整數
+```javascript=
+function getRandom(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+      }
+      console.log(getRandom(1, 10));
+```
+猜數字
+```javascript=
+function getRandom(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+      }
+var random = getRandom(1, 10);
+while(true) { //死循環 需break
+    var num = prompt('輸入1~10之間的一個數');
+    if (num > random){
+        alert('猜大了');
+    }else if (num < random){
+        alert('猜小了');
+    }else {
+        alert('猜對了');
+        break;
+    }
+}
+```
+### 日期
+![](https://i.imgur.com/3CDhQAg.png)
+```javascript=
+var date = new Date();
+console.log(date);
+```
+![](https://i.imgur.com/zccAVkp.png)
+
+格式化日期
+```javascript=
+var date = new Date();
+console.log(date.getFullYear());
+console.log(date.getMonth() + 1);
+console.log(date.getDate());
+console.log(date.getDay());
+var year = date.getFullYear();
+var month = date.getMonth();
+var date = date.getDate();
+var arr = ['日', '一', '二', '三', '四', '五', '六',];
+var day = date.getDay();
+console.log('今天是'+ year + '年' + month +'月' + date '日' + arr[day]);
+```
+封裝一個函數返回當前時分秒
+```javascript=
+function getTimer(){
+    var time = new Date();
+    var h = time.getHours();
+    h = h < 10 ? '0' + h : h;
+    var m = time.getMinutes();
+    m = m < 10 ? '0' + m : m;
+    var s = time.getSeconds();
+    s = s < 10 ? '0' + s : s;
+    return h + ":" + m + ':' + s;
+}
+console.log(getTimer());
+```
+valueOf() getTime()<br>
+距離1970.1.1的總毫秒數(時間戳)
+```javascript=
+var date = new Date();
+console.log(date.valueOf());
+console.log(date.getTime());
+//2.簡單的寫法(常用)
+date1 = +new Date();
+console.log(date1);
+//3.h5新增方法
+console.log(Date.now());
+```
+倒計時案例
+```javascript=
+ function countDown(time) {
+        var nowTime = +new Date(); //當前時間總毫秒數
+        var inputTime = +new Date(time); //用戶輸入時間總毫秒數
+        var times = (inputTime - nowTime) / 1000; 
+        var d = parseInt(times / 60 / 60 / 24); //天
+        var h = parseInt((times / 60 / 60) % 24); //時
+        var m = parseInt((times / 60) % 60); //分
+        var s = parseInt(times & 60); //秒
+        return d + "天" + h + "時" + m + "分" + s + "秒";
+      }
+      console.log(countDown("2022-10-27 06:00:00"));
+```
+### 檢測是否為數組
+(1) instanceof
+```javascript=
+var arr = [];
+console.log(arr instanceof Array);
+```
+(2) Array.isArray(參數);
+```javascript=
+var arr = [];
+console.log(Array.isArray(arr));
+```
+### 添加刪除數組元素
+![](https://i.imgur.com/QyqosGk.png)
+```javascript=
+var arr = [1,2,3,4];
+// arr.push(4, 'xxx');
+console.log(arr.push(4, 'xxx'));
+```
+篩選數組案例
+```javascript=
+var arr = [100,150,300,400];
+var newArr = [];
+for(var i = 0; i < arr.length; i++){
+    if (arr[i] <200){
+        newArr.push(arr[i]);
+    }
+}
+console.log(newArr);
+```
+### 數組排序
+![](https://i.imgur.com/mQnUSUG.png)
+```javascript=
+//1.翻轉數組
+var arr = ['a', 'b', 'c'];
+arr.reverse();
+console.log(arr);
+//2.數組排序(冒泡排序)
+var arr1 = [1,5,7,99];
+arr1.sort(function(a, b){
+    return a - b;  //升序
+    //return b - a;  降序
+});
+console.log(arr1);
+```
+### 數組索引方法
+![](https://i.imgur.com/N22OeJM.png)
+```javascript=
+var arr = ['red', 'gereen', 'blue'];
+console.log(arr.indexOf('blue'));//2
+```
+#### 數組去重複案例(面試題)
+```javascript=
+function unique(arr) {
+        var newArr = [];
+        for (var i = 0; i < arr.length; i++) {
+          if (newArr.indexOf(arr[i]) === -1) {
+            newArr.push(arr[i]);
+          }
+        }
+        return newArr;
+      }
+      var demo = unique(["c", "a", "b", "c", "z", "a"]);
+      console.log(demo);
+```
+![](https://i.imgur.com/mPd02uy.png)
+```javascript=
+var arr = ['green', 'blue', 'pink'];
+console.log(arr.join('-'));
+```
+查找字符串中所有o出現的位置及次數
+```javascript=
+ var str = "abcodeodos";
+      var index = str.indexOf("o");
+      var num = 0;
+      while (index !== -1) {
+    //for (i = 0; index !== -1; i++) {
+        console.log(index);
+        num++;
+        index = str.indexOf("o", index + 1);
+      }
+      console.log(num);// 次數
+```
+根據位置返回字符
+![](https://i.imgur.com/xePtFtW.png)
+```javascript=
+var str = 'andy';
+for (var i = 0; i < str.length; i ++){
+    console.log(str.charAt(i));//andy
+}
+```
+![](https://i.imgur.com/kkhgavx.png)
+
+```javascript=
+var str = "abcoeodo";
+      var o = {};
+      for (var i = 0; i < str.length; i++) {
+        var chars = str.charAt(i); //chars=字符串的每一個字符
+        if (o[chars]) { //o[chars]得到的是屬性值
+          o[chars]++;
+        } else {
+          o[chars] = 1;
+        }
+      }
+      console.log(o);
+//遍歷對象
+var max = 0;
+var ch = '';
+for (var k in o){
+    //k 得到的是屬性名
+    //o[k]得到的是屬性值
+    if(o[k] > max){ 
+        max = o[k];
+        ch = k;
+    }
+}
+console.log(max); //次數
+console.log('最多字符的是' + ch);
+```
+/<br>
+字符串操作方法
+![](https://i.imgur.com/GgBVMsj.png)
+
+替換字符<br>
+replace('被替換', '替換為')
+```javascript=
+//將所有o替換為*
+var str1 = 'aocodosso';
+while(str1.indexOd(o) !== -1){
+    str1 = str1.replace('o', '*');
+}
+console.log(str1);
+``` 
+字符轉換為數組<br>
+```javascript=
+//split('分隔符')  join功能相反
+var str = 'red, pink';
+console.log(str.split(','));
+```
+### 簡單類型與複雜類型
+p188
+![](https://i.imgur.com/cHx7aeV.png)
+![](https://i.imgur.com/kUEb6MR.png)
+
+
+ 
+
+
+
